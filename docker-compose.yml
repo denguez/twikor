@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:13.1-alpine
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment: 
+      POSTGRES_DB: twikor
+      POSTGRES_USER: twikor
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+  bot:
+    build: .
+    restart: always
+    environment: 
+      DEBUG: "false"
+      DATABASE_URL: jdbc:postgresql://db:5432/twikor?sslmode=disable
+      DATABASE_DRIVER: org.postgresql.Driver
+      DATABASE_USER: twikor
+      DATABASE_PASSWORD: ${DB_PASSWORD}
+      DISCORD_BOT_TOKEN: ${BOT_TOKEN}
+      TWITTER_PREFIX: "!t"
+      TWITTER_API_TOKEN: ${TWITTER_API_TOKEN}
+      TWITTER_API_SECRET: ${TWITTER_API_SECRET}
+      TWITTER_ACCESS_TOKEN: ${TWITTER_ACCESS_TOKEN}
+      TWITTER_ACCESS_SECRET: ${TWITTER_ACCESS_SECRET}
+    depends_on: 
+      - db

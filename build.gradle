@@ -1,0 +1,65 @@
+plugins {
+    // Apply the Kotlin JVM plugin to add support for Kotlin.
+    id 'org.jetbrains.kotlin.jvm' version '1.4.21'
+
+    // Apply the application plugin to add support for building a CLI application.
+    id 'application'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // Discord client
+    implementation 'com.jessecorbett:diskord:1.8.1'
+
+    // Twitter client
+    implementation 'com.twitter:hbc-core:2.2.0'
+    implementation 'com.twitter:hbc-twitter4j:2.2.0'
+
+    // Persistance
+    implementation "org.jetbrains.exposed:exposed-core:0.24.1"
+    implementation "org.jetbrains.exposed:exposed-dao:0.24.1"
+    implementation "org.jetbrains.exposed:exposed-jdbc:0.24.1"
+
+    // DB drivers
+    compile "mysql:mysql-connector-java:5.1.48"
+	compile "org.postgresql:postgresql:42.2.2"
+
+    // JVM Dependencies
+    implementation "io.github.microutils:kotlin-logging:1.7.9"
+    implementation "io.ktor:ktor-client-core:1.3.2"
+    implementation "io.ktor:ktor-client-cio:1.3.2"
+    implementation "io.ktor:ktor-client-logging:1.3.2"
+    implementation "io.ktor:ktor-client-logging-jvm:1.3.2"
+
+    // Logs
+    implementation 'org.slf4j:slf4j-simple:1.7.21'
+    // Align versions of all Kotlin components
+    implementation platform('org.jetbrains.kotlin:kotlin-bom')
+    // Use the Kotlin JDK 8 standard library.
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-common'
+    // Use the Kotlin test library.
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    // Use the Kotlin JUnit integration.
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
+}
+
+application {
+    // Define the main class for the application.
+    mainClassName = 'twikor.AppKt'
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': application.mainClassName)
+    }
+
+    from {
+        configurations.compileClasspath.collect { 
+            it.isDirectory() ? it : zipTree(it) 
+        }
+    }
+}
