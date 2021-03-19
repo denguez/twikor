@@ -45,7 +45,7 @@ suspend fun main() {
 
 fun Bot.twitter(handler: TwitterHandler.() -> Unit) {
     var client: TwitterClient? = null
-    commands(TWITTER_PREFIX) {
+    commands(BOT_PREFIX) {
         command(" start") {
             client?.stop()
             client = twitterStart(handler)
